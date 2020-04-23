@@ -1,0 +1,132 @@
+
+#############################################
+
+# These runs in the command line in putty
+
+hadoop fs -ls
+
+# make a directory called water
+hadoop fs -mkdir water   
+
+# put a file in home directory into water folder
+hadoop fs -put water/1487_2017.tsv /water  
+
+# check the file under the water directory 
+hadoop fs -ls water
+
+##############################################
+
+# run the command line again to get beeline running
+beeline --silent 
+
+# estabilsh connection 
+!connect  jdbc:hive1://babar.es.its.nyu.edu:10000/
+
+
+##############################################
+
+use USERNAME
+show tables; 
+
+DROP TABLE sales;
+CREATE TABLE sales 
+(
+  `store_code_uc` string ,
+  `upc` string ,
+  `week_end` string ,
+  `units` bigint ,
+  `prmult` bigint ,
+  `price` double ,
+  `feature` bigint ,
+  `display` bigint )  ROW FORMAT   DELIMITED
+    FIELDS TERMINATED BY '\t'
+    COLLECTION ITEMS TERMINATED BY '\002'
+    MAP KEYS TERMINATED BY '\003'
+  STORED AS TextFile TBLPROPERTIES("skip.header.line.count" = "1")
+;
+LOAD DATA INPATH '' INTO TABLE sales;
+
+
+
+
+
+***********************READ IN PROD***************************
+
+
+CREATE TABLE products
+(
+  `upc` string ,
+  `upc_ver_uc` string ,
+  `panel_year` bigint ,
+  `flavor_code` bigint ,
+  `flavor_descr` string ,
+  `form_code` bigint ,
+  `form_descr` string ,
+  `formula_code` bigint ,
+  `formula_descr` string ,
+  `container_code` bigint ,
+  `container_descr` string ,
+  `salt_content_code` bigint ,
+  `salt_content_descr` string ,
+  `style_code` bigint ,
+  `style_descr` string ,
+  `type_code` bigint ,
+  `type_descr` string ,
+  `product_code` bigint ,
+  `product_descr` string ,
+  `variety_code` bigint ,
+  `variety_descr` string ,
+  `organic_claim_code` bigint ,
+  `organic_claim_descr` string ,
+  `usda_organic_seal_code` bigint ,
+  `usda_organic_seal_descr` string ,
+  `common_consumer_name_code` string ,
+  `common_consumer_name_descr` string ,
+  `strength_code` string ,
+  `strength_descr` string ,
+  `scent_code` string ,
+  `scent_descr` string ,
+  `dosage_code` string ,
+  `dosage_descr` string ,
+  `gender_code` string ,
+  `gender_descr` string ,
+  `target_skin_condition_code` string ,
+  `target_skin_condition_descr` string ,
+  `use_code` string ,
+  `use_descr` string ,
+  `size2_code` bigint ,
+  `size2_amount` double ,
+  `size2_units` string )  ROW FORMAT   DELIMITED
+    FIELDS TERMINATED BY '\t'
+    COLLECTION ITEMS TERMINATED BY '\002'
+    MAP KEYS TERMINATED BY '\003'
+  STORED AS TextFile TBLPROPERTIES("skip.header.line.count" = "1")
+;
+
+LOAD DATA INPATH '' INTO TABLE products;
+
+********************STORE INFO******************************
+
+
+CREATE TABLE store
+(
+  `store_code_uc` string ,
+  `year` bigint ,
+  `parent_code` string ,
+  `retailer_code` string ,
+  `channel_code` string ,
+  `store_zip3` bigint ,
+  `fips_state_code` bigint ,
+  `fips_state_descr` string ,
+  `fips_county_code` bigint ,
+  `fips_county_descr` string ,
+  `dma_code` bigint ,
+  `dma_descr` string )  ROW FORMAT   DELIMITED
+    FIELDS TERMINATED BY '\t'
+    COLLECTION ITEMS TERMINATED BY '\002'
+    MAP KEYS TERMINATED BY '\003'
+  STORED AS TextFile TBLPROPERTIES("skip.header.line.count" = "1")
+;
+
+LOAD DATA INPATH '' INTO TABLE store;
+
